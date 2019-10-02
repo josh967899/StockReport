@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "UserList";
+}
+<style>
+    .lity-iframe .lity-container, .lity-youtube .lity-container, .lity-vimeo .lity-container, .lity-facebookvideo .lity-container, .lity-googlemaps .lity-container {
+        width: 80% !important;
+        max-width: 964px !important;
+        height: 80% !important;
+    }
+
+   
+
+    .lity-iframe-container {
+        height: 100% !important;
+    }
+
+
+    .lity {
+        background: rgba(0, 0, 0, 0.55) !important;
+    }
+
+        .lity * {
+            border-radius: 10px;
+        }
+
+    
+</style>
+<script src="~/css_js/jquery/jquery-3.3.1.min.js"></script>
+<script src="~/css_js/lity-2.3.1/src/lity.js"></script>
+<link href="~/css_js/lity-2.3.1/dist/lity.css" rel="stylesheet" />
+<h2>UserList</h2>
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+{
+    @Html.AntiForgeryToken()
+    <a class="LogoutBtn" href="javascript:document.getElementById('logoutForm').submit()"><i class="fas fa-sign-out-alt"></i>登出</a>
+}
+<a class="NewUserBtn" onclick='NewUser()'>新增使用者</a>
+<table id="myTable" class="table">
+    <tr>
+        <th>
+            使用者名稱
+        </th>
+        <th>
+            Role
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var user in Model)
+    {
+
+        <tr >
+            <td>
+                @user.UserName
+            </td>
+            <td>
+                @user.Position
+            </td>
+        </tr>      
+    }
+</table>
+    <script>
+        var myLity = null;
+        function NewUser() {
+            url = "@Url.Action("Register", "Account")";
+            myLity = lity(url);
+        }
+        function Lityclose() {
+            myLity.close();
+            location.reload();
+        }
+        function Edit(url) {
+            myLity = lity(url);
+        }
+    </script>

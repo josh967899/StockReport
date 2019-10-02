@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockReport", "StockReport\StockReport.csproj", "{B0CA1BFB-6DB1-4A79-A477-273D08DAA3D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockReport.Tests", "StockReport.Tests\StockReport.Tests.csproj", "{F048F43D-8A8C-431A-AF44-503C66004783}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0CA1BFB-6DB1-4A79-A477-273D08DAA3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0CA1BFB-6DB1-4A79-A477-273D08DAA3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0CA1BFB-6DB1-4A79-A477-273D08DAA3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0CA1BFB-6DB1-4A79-A477-273D08DAA3D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F048F43D-8A8C-431A-AF44-503C66004783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F048F43D-8A8C-431A-AF44-503C66004783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F048F43D-8A8C-431A-AF44-503C66004783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F048F43D-8A8C-431A-AF44-503C66004783}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {47D521B9-D98F-4A50-BB52-A19E4760EBBE}
+	EndGlobalSection
+EndGlobal

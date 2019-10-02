@@ -1,0 +1,417 @@
+﻿@model StockReport.ViewModels.ClientPages
+@{
+    ViewBag.Title = "ClientDetail";
+
+}
+<style>
+    .backgroundLeft {
+        background-color: white;
+    }
+
+    .background {
+        background-color: white;
+    }
+
+    .profile {
+        width: 100px;
+    }
+
+    .sidebar-submenu {
+        display: none;
+    }
+
+    .fontSize {
+        font-size: 1.5em;
+    }
+
+
+    .nav {
+        display: grid;
+    }
+
+    .cardDisplay {
+        padding: inherit;
+        border-right: 20px;
+        border: outset;
+    }
+
+    .firstrow {
+        padding: 20px;
+    }
+
+    .show {
+        display: block !important;
+    }
+
+    .hidden {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+</style>
+<script src="~/css_js/canvas/canvasjs.min.js"></script>
+<script src="~/css_js/jquery/jquery-3.3.1.min.js"></script>
+<script src="~/css_js/lity-2.3.1/src/lity.js"></script>
+<link href="~/css_js/lity-2.3.1/dist/lity.css" rel="stylesheet" />
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+
+<div class="col-lg-12 col-md-12 col-xs-12">
+    <div class="col-lg-2 col-md-2 col-xs-2">
+
+        <div class="col-lg-12 col-md-12 col-xs-12 text-center ">
+            Stock Report
+        </div>
+        <div class="col-lg-12 col-md-12 col-xs-12 text-center ">
+            <img src="~/image/ClientPic/NoImage.jpg" class="img-circle profile" />
+        </div>
+        <div class="col-lg-12 col-md-12 col-xs-12 text-center ">
+            @(Model.UserName != null ? Model.UserName.UserName : "")
+        </div>
+        <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+                <li class="sidebar-dropdown">
+                    <a href="#">
+                        <i class="fa fa-tachometer-alt"></i>
+                        <span>查看</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            <li> <a class="btn btn-default" onclick="Watch('Stock')">股票</a></li>
+                            <li><a class="btn btn-default" onclick="Watch('Trade')">交易</a></li>
+                            <li><a class="btn btn-default" onclick="Watch('Bonus')">股利</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="sidebar-dropdown">
+                    <a href="#">
+                        <i class="fa fa-tachometer-alt"></i>
+                        <span>新增</span>
+                    </a>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            <li><a class="btn btn-default" onclick="Create('Stock')">股票</a> </li>
+                            <li><a class="btn btn-default" onclick="Create('Trade')">交易</a> </li>
+                            <li><a class="btn btn-default" onclick="Create('Bonus')">股利</a> </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-10 col-md-10 col-xs-10 backgroundLeft">
+        <div class="row">
+            <div class="col-lg-12 text-center fontSize">               
+                <div class="col-xs-4">
+                    @Html.DropDownList("StockId", new SelectList(ViewBag.Stocks, "Id", "StockName"), "please select filter", htmlAttributes: new { @class = "form-control", @id = "myStockId" })
+                </div>
+                <div class="col-xs-4 text-center fontSize">
+                    <input class="form-control " id="myInput" type="text" placeholder="Search..">
+                </div>
+                <div class="col-xs-1 col-xs-offset-2">
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-primary">登出</a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row firstrow">
+            <div class="col-lg-4 col-md-4 col-xs-6 background cardDisplay">
+                <div class="card">
+                    <h5 class="card-title">已完成損益</h5>
+                    <h1 class="card-body text-center">
+                        @(Model.done.ToString("N0"))
+                    </h1>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-xs-6 background cardDisplay show" name="d" onclick='Swith()'>
+                <div class="card">
+                    <h5 class="card-title">未完成損益</h5>
+                    <h1 class="card-body text-center">
+                        @(Model.undone.ToString("N0"))
+                    </h1>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-6 background cardDisplay hidden" name="d" onclick='Swith()'>
+                <div class="card">
+                    <h5 class="card-title">未完成金額</h5>
+                    <h1 class="card-body text-center">
+                        @(Model.SumhodePrice.ToString("N0"))
+                    </h1>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-xs-6 background cardDisplay">
+                <div class="card">
+                    <h5 class="card-title">總損益</h5>
+                    <h1 class="card-body text-center">
+                        @((Model.undone + Model.done).ToString("N0"))
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <table class="table background">
+            <tr>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().stock.StockName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().hode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().investAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().income)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().cashDividend)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().stock.CurrentPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().hodePrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().balance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.profits.First().profit)
+                </th>
+            </tr>
+            <tbody id="myTable">
+                @foreach (var item in Model.profits)
+                {
+                    <tr class="@(item.hode==0? "":"target")" data-stock="@item.stock.StockName" data-hode="@item.hode" data-invest="@item.investAmount">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.stock.StockName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.hode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.investAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.income)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.cashDividend)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.stock.CurrentPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.hodePrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.balance)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.profit)%
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row firstrow ">
+            <div class="col-lg-6 col-md-6 col-xs-6">
+                <div id="chartContainer"></div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-6">
+                <div id="chartContainer2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var sumHode = @Model.SumHode;
+        var sumInvest = @Model.SumInvest;
+        var hodes = [];
+        var invests = [];
+
+        $.each($('.target'), function () {
+            var name = $(this).attr("data-stock");
+            var hode = $(this).attr("data-hode");
+            var invest = $(this).attr("data-invest");
+            if (hode !== 0) {
+                var x = { y: (hode / sumHode * 100).toFixed(2), legendText: name + '(' + hode + ')', label: name };
+                hodes.push(x);
+                var inv = { y: (invest / sumInvest * 100).toFixed(2), legendText: name + '(' + invest + ')', label: name }
+                invests.push(inv);
+            }
+
+        });
+            var chart = new CanvasJS.Chart("chartContainer", {
+            title: {
+                    text: "持有股票數比"
+            },
+            animationEnabled: true,
+            legend: {
+                    verticalAlign: "center",
+                horizontalAlign: "left",
+                fontSize: 20,
+                fontFamily: "Helvetica"
+            },
+            theme: "light2",
+            data: [
+            {
+                    type: "pie",
+                indexLabelFontFamily: "Garamond",
+                indexLabelFontSize: 20,
+                indexLabel: "{label} {y}%",
+                startAngle: -20,
+                showInLegend: true,
+                toolTipContent: "{legendText} {y}%",
+                dataPoints: hodes,
+
+                //You can add dynamic data from the controller as shown below. Check the controller and uncomment the line which generates dataPoints.
+                //dataPoints: @Html.Raw(ViewBag.DataPoints),
+            }
+            ]
+        });
+        chart.render();
+
+         var chart2 = new CanvasJS.Chart("chartContainer2", {
+            title: {
+                    text: "持有投資比重"
+            },
+            animationEnabled: true,
+            legend: {
+                    verticalAlign: "center",
+                horizontalAlign: "left",
+                fontSize: 20,
+                fontFamily: "Helvetica"
+            },
+            theme: "light2",
+            data: [
+            {
+                    type: "pie",
+                indexLabelFontFamily: "Garamond",
+                indexLabelFontSize: 20,
+                indexLabel: "{label} {y}",
+                startAngle: -20,
+                showInLegend: true,
+                toolTipContent: "{legendText} {y}%",
+                dataPoints: invests,
+
+                //You can add dynamic data from the controller as shown below. Check the controller and uncomment the line which generates dataPoints.
+                //dataPoints: @Html.Raw(ViewBag.DataPoints),
+            }
+            ]
+        });
+        chart2.render();   
+    });
+
+    $(document).ready(function () {
+        
+        $("#myStockId").on("change", function () {
+            var val = $(this).find(':selected').val();;
+            var value = $(this).find(':selected').text();;
+            console.log(val);
+            if (val == "") value = val;
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>
+<script>
+    var myLity = null;
+    function Create(data) {
+        var url = '';
+        switch (data) {
+            case "Stock":
+                url ="@Url.Action("StockCreate", "Stock")"; 
+                break;
+            case "Trade":
+                url = "@Url.Action("TradeCreate", "Trade")";  
+                break;
+            case "Bonus":
+                url = "@Url.Action("DividendCreate", "Stock")";  
+                break;
+        }
+        if (url != '')
+            myLity = lity(url);
+    }
+    function Watch(data) {
+        var url = '';
+        switch (data) {
+            case "Stock":
+                url ="@Url.Action("StockList", "Stock")";  
+                break;
+            case "Trade":
+                url =  "@Url.Action("TradeList", "Trade")";
+                break;
+            case "Bonus":
+                url = "@Url.Action("DividendList", "Stock")"; 
+                break;
+        }
+        if (url != '')
+            myLity = lity(url);
+    }
+    function Lityclose() {
+        myLity.close();
+        location.reload();
+    }
+    function Edit(url) {
+        myLity = lity(url);
+    }
+
+    function Swith() {
+
+        $("div[name='d']").each(function () {
+            if ($(this).hasClass("show")) {
+                $(this).removeClass("show")
+                $(this).addClass("hidden")
+            } else {
+                $(this).removeClass("hidden")
+                $(this).addClass("show")
+            }
+        } )
+    }
+
+    jQuery(function ($) {
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
+    });
+
+    window.onresize = function (event) {
+        this.console.log(this.innerWidth)
+    }
+</script>
+

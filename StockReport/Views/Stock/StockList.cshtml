@@ -1,0 +1,82 @@
+﻿@model IEnumerable<StockReport.Models.Stock>
+
+@{
+    ViewBag.Title = "StockList";
+}
+
+<h2>StackList</h2>
+<div class="row">
+    <div class="col-lg-12 text-center fontSize">
+        <div class="ccol-xs-4 text-center fontSize">
+            <input class="form-control " id="myInput" type="text" placeholder="Search..">
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<p>
+    @Html.ActionLink("Create Stack", "StockCreate")
+</p>
+<table id="myTable" class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StockCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StockName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="@item.Id">
+            <td>
+                @Html.DisplayFor(modelItem => item.StockCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "StockEdit", new { id = item.Id }) |
+                <a onclick='Ondelete(@item.Id )'>Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    $(document).ready(function () {       
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+    function Ondelete(id) {
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("DeleteStock", "Stock")",
+            data: {
+                id: id
+            },
+            success: function (data) {
+                if (data == "done") {
+                    console.log(data);
+                    $("#" + id).remove();
+                } else {
+                    alert(data);
+                }
+            },
+            dataType: 'json'
+        });
+
+
+
+        console.log("delete" + id);
+        //console.log(x);
+    }
+</script>

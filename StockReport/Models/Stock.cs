@@ -12,7 +12,7 @@ namespace StockReport.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [DisplayName("股票代碼")]
-        public int StockCode { get; set; }
+        public string StockCode { get; set; }
         [DisplayName("股票名稱")]
         public string  StockName { get; set; }
         [DisplayName("上市/上櫃")]

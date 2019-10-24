@@ -256,6 +256,10 @@
     <Compile Include="Migrations\201909241220218_reAddRate.Designer.cs">
       <DependentUpon>201909241220218_reAddRate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910241323139_stockCodeChange.cs" />
+    <Compile Include="Migrations\201910241323139_stockCodeChange.Designer.cs">
+      <DependentUpon>201910241323139_stockCodeChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dividend.cs" />
@@ -441,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909241220218_reAddRate.resx">
       <DependentUpon>201909241220218_reAddRate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910241323139_stockCodeChange.resx">
+      <DependentUpon>201910241323139_stockCodeChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

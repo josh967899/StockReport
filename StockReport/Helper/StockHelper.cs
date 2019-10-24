@@ -92,7 +92,7 @@ namespace StockReport.Helper
 
                             foreach (var val in json[msgKey])
                             {
-                                int stockCode = Convert.ToInt32(val["c"]);
+                                string stockCode = val["c"].ToString();
                                 var stock = db.Stocks.Where(s => s.StockCode == stockCode).FirstOrDefault();
                                 if (stock == null) continue;
                                 stock.CurrentPrice = Convert.ToDecimal(val["z"]);
